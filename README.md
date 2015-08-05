@@ -1,6 +1,6 @@
 # HTTP
 
-A super lightweight interface for making _simple_ asynchronous requests, with chained methods.
+A super lightweight interface for making basic asynchronous requests, with chained methods.
 
 Intended for use in modern browsers.
 
@@ -19,7 +19,7 @@ HTTP.POST('/some/endpoint/somewhere')
 
 ## Usage
 
-The chain begins with the `HTTP` function, or one of it's methods. This returns an `io` object with all the chainable methods.
+The chain begins with the `HTTP` function, or one of its methods. Each of these return an `io` object with all the chainable methods.
 
 - `HTTP(method, url)`
 - `HTTP.DELETE(url)`
@@ -29,9 +29,9 @@ The chain begins with the `HTTP` function, or one of it's methods. This returns 
 - `HTTP.POST(url)`
 - `HTTP.PUT(url)`
 
-The specific methods are equivalent to passing the method name to the main function.
+The specific methods are equivalent to passing the method string to `HTTP`.
 
-Passing only a single parameter  to the main function, that isn't a method string, will result in a default `GET` request, and the first parameter used as the `url` instead.
+Passing only a single parameter  to `HTTP`, that isn't a method string, will result in a default `GET` request, and the first parameter used as the `url` instead.
 
 The following are all equivalent.
 
@@ -45,7 +45,7 @@ You get the idea.
 
 Passing the wrong method string will result in total chaos. Try to avoid that.
 
-The chainable methods provided on the `io` object are as follows:
+The methods provided on the `io` object are as follows. Each one returns the `io` object for chaining.
 
 `.cred()`
 
@@ -93,7 +93,7 @@ Requires
 - `XMLHttpRequest`
 - `EventTarget.addEventListener`
 
-and other ES5 standards. Check your compatibility tables.
+and other ES5 standards.
 
 Look elsewhere for `ActiveXObject` legacy support.
 
