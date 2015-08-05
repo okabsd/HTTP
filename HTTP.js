@@ -76,11 +76,11 @@ window.HTTP = !window.hasOwnProperty('HTTP') && (function() {
 		return internal.delay = delay || internal.delay, internal.delay;
 	};
 
-  function assign (method) {
-    HTTP[method] = function(url) {
+	function assign(method) {
+		HTTP[method] = function(url) {
 			return HTTP(method, url);
 		};
-  }
+	}
 
 	internal.methods.forEach(assign);
 
