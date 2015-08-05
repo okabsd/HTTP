@@ -1,19 +1,19 @@
 # HTTP
 
-HTTP is a super lightweight interface for making asynchronous requests, with chained methods.
+A super lightweight interface for making _simple_ asynchronous requests, with chained methods.
 
-Intended for simple usage in modern browsers.
+Intended for use in modern browsers.
 
 ## Example
 
 ```JavaScript
 HTTP.POST('/some/endpoint/somewhere')
-  .set('Content-Type', 'application/xml')
+  .set('Content-Type', 'application/x-www-form-urlencoded')
   .mime('text/plain')
   .cred()
   .data({one: 1})
   .then(function (response, status, request) {
-    console.log(response, status.request);
+    console.log(response, status, request);
   });
 ```
 
@@ -29,9 +29,9 @@ The chain begins with the `HTTP` function, or one of it's methods. This returns 
 - `HTTP.POST(url)`
 - `HTTP.PUT(url)`
 
-The named methods are equivalent to passing the method name to the main function.
+The specific methods are equivalent to passing the method name to the main function.
 
-Passing only a single parameter that isn't a method string, will result in a default `GET` request, and the first parameter used as the `url`.
+Passing only a single parameter  to the main function, that isn't a method string, will result in a default `GET` request, and the first parameter used as the `url` instead.
 
 The following are all equivalent.
 
@@ -43,7 +43,7 @@ HTTP.GET('/my/endpoint.json')
 
 You get the idea.
 
-Passing the wrong method string, that isn't a `url`, will result in total chaos. Try to avoid that.
+Passing the wrong method string will result in total chaos. Try to avoid that.
 
 The chainable methods provided on the `io` object are as follows:
 
@@ -64,7 +64,13 @@ The chainable methods provided on the `io` object are as follows:
 
 `.data(data)`
 
-- Provides data to be sent.
+- Provides `data` to be sent (`POST`).
+- Overrides `data` provided by previous calls in the chain.
+- Will encode non-strings with their key-value pairings:
+```
+{one: 0, two: 1, three: 2} => 'one=0&two=1&three=2'
+['one', 'two', 'three'] => '0=one&1=two&2=three'
+```
 
 `.mime(type)`
 
