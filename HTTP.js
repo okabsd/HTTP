@@ -1,11 +1,7 @@
-// Colin 'Oka' Hall-Coates <yo@oka.io>
-// MIT 2015
+// Colin 'Oka' Hall-Coates <yo@oka.io> MIT 2015
 
-window.HTTP = !window.hasOwnProperty('HTTP') && (function () {
-  var internal = {
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'],
-    delay: 50
-  };
+HTTP = (function () {
+  var methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
 
   function assign (method) {
     HTTP[method] = function (url) {
@@ -14,14 +10,14 @@ window.HTTP = !window.hasOwnProperty('HTTP') && (function () {
   }
 
   function chain (e, fn) {
-    if (e.timer) window.clearTimeout(e.timer);
+    clearTimeout(e.t);
 
     if (fn) fn.call();
 
-    if (e.request.readyState < 2) {
-      e.timer = window.setTimeout(function () {
-        e.request.send(e.data);
-      }, internal.delay);
+    if (e.r.readyState < 2) {
+      e.t = setTimeout(function () {
+        e.r.send(e.data);
+      }, 50);
     }
   }
 
@@ -34,62 +30,56 @@ window.HTTP = !window.hasOwnProperty('HTTP') && (function () {
 
   function HTTP (method, url) {
     var env = {
-      callbacks: [],
-      data: null,
-      timer: null,
-      request: new XMLHttpRequest()
+      c: [],
+      r: new XMLHttpRequest()
     };
     var io = {
       cred: function () {
         return chain(env, function () {
-          env.request.withCredentials = true;
-        }), this;
+          env.r.withCredentials = true;
+        }), io;
       },
       do: function (fn) {
         return chain(env, function () {
-          fn.call(env.request, env.request.response,
-            env.request.status, env.request);
-        }), this;
+          fn.call(env.r, env.r.response,
+            env.r.status, env.r);
+        }), io;
       },
       data: function (d) {
         return chain(env, function () {
-          env.data = compress(d);
-        }), this;
+          env.d = compress(d);
+        }), io;
       },
       mime: function (m) {
         return chain(env, function () {
-          env.request.overrideMimeType(m);
-        }), this;
+          env.r.overrideMimeType(m);
+        }), io;
       },
       set: function (h, v) {
         return chain(env, function () {
-          env.request.setRequestHeader(h, v);
-        }), this;
+          env.r.setRequestHeader(h, v);
+        }), io;
       },
       then: function (fn) {
         return chain(env, function () {
-          env.callbacks.push(fn);
-        }), this;
+          env.c.push(fn);
+        }), io;
       }
     };
 
-    if (internal.methods.indexOf(method.toUpperCase()) < 0) {
+    if (!url) {
       url = method;
       method = 'GET';
     }
 
-    env.request.addEventListener('load', function () {
-      env.callbacks.forEach(function (fn) {
+    env.r.onload =  function () {
+      env.c.forEach(function (fn) {
         io.do(fn);
       });
-    });
+    };
 
-    return env.request.open(method, url, true), chain(env), io;
+    return env.r.open(method, url, true), chain(env), io;
   }
 
-  HTTP.delay = function (delay) {
-    return internal.delay = delay || internal.delay, internal.delay;
-  };
-
-  return internal.methods.forEach(assign), HTTP;
+  return methods.forEach(assign), HTTP;
 }());
