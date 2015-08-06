@@ -1,6 +1,6 @@
 // Colin 'Oka' Hall-Coates <yo@oka.io> MIT 2015
 
-HTTP = (function () {
+window.HTTP = (function () {
   var methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
 
   function assign (method) {
