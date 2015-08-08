@@ -63,14 +63,18 @@ The methods provided on the `io` object are as follows. Each one returns the `io
 
 -  Sets or combines a header.
 
-`.data(data)`
+`.data(data, raw)`
 
-- Provides `data` to be sent (`POST`).
-- Overrides `data` provided by previous calls in the chain.
+- Provides `data` to be sent along to the server.
+- Overrides any `data` provided by previous calls in the chain.
 - Will encode non-strings with their key-value pairings:
-```
+```JavaScript
 {one: 0, two: 1, three: 2} => 'one=0&two=1&three=2'
 ['one', 'two', 'three'] => '0=one&1=two&2=three'
+```
+- To avoid encoding to string, pass `raw` as `true`.
+```JavaScript
+.data(myFormData, true)
 ```
 
 `.mime(type)`

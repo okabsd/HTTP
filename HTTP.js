@@ -16,7 +16,7 @@ window.HTTP = (function () {
 
     if (e.r.readyState < 2) {
       e.t = setTimeout(function () {
-        e.r.send(e.data);
+        e.r.send(e.d);
       }, 50);
     }
   }
@@ -45,9 +45,9 @@ window.HTTP = (function () {
             env.r.status, env.r);
         }), io;
       },
-      data: function (d) {
+      data: function (d, raw) {
         return chain(env, function () {
-          env.d = compress(d);
+          env.d = raw ? d : compress(d);
         }), io;
       },
       mime: function (m) {
