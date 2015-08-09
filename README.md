@@ -94,6 +94,7 @@ The request is sent when the chain ends.
 Requires
 
 - `XMLHttpRequest`
+- `EventTarget.addEventListener`
 
 and other ES5 standards.
 

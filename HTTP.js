@@ -1,8 +1,6 @@
 // Colin 'Oka' Hall-Coates <yo@oka.io> MIT 2015
 
 window.HTTP = (function () {
-  var methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'];
-
   function assign (method) {
     HTTP[method] = function (url) {
       return HTTP(method, url);
@@ -72,14 +70,14 @@ window.HTTP = (function () {
       method = 'GET';
     }
 
-    env.r.onload =  function () {
+    env.r.addEventListener('load', function () {
       env.c.forEach(function (fn) {
         io.do(fn);
       });
-    };
+    });
 
     return env.r.open(method, url, true), chain(env), io;
   }
 
-  return methods.forEach(assign), HTTP;
+  return ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'].forEach(assign), HTTP;
 }());
