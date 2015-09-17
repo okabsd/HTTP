@@ -14,7 +14,7 @@ HTTP.POST('/some/endpoint/somewhere')
   .mime('text/plain')
   .cred()
   .data({one: 1})
-  .then(function (response, status, request) {
+  .and(function (response, status, request) {
     console.log(response, status, request);
   });
 ```
@@ -81,7 +81,7 @@ The methods provided on the `io` object are as follows. Each one returns the `io
 
 - Overrides response `mimeType`.
 
-`.then(fn([response[, status[, request]]))`
+`.and(fn([response[, status[, request]]))`
 - Adds a callback function to the list of callbacks, to be invoked when the response loads.
 - Callbacks are invoked in the order they are added.
 - `this` context in `fn` set to the `XMLHttpRequest` object.

@@ -1,6 +1,6 @@
 // Colin 'Oka' Hall-Coates <yo@oka.io> MIT 2015
 
-window.HTTP = (function () {
+(function (G) {
   function assign (method) {
     HTTP[method] = function (url) {
       return HTTP(method, url);
@@ -10,12 +10,12 @@ window.HTTP = (function () {
   function chain (e, fn) {
     clearTimeout(e.t);
 
-    if (fn) fn.call();
+    if (fn) fn();
 
     if (e.r.readyState < 2) {
       e.t = setTimeout(function () {
         e.r.send(e.d);
-      }, 50);
+      }, HTTP.delay);
     }
   }
 
@@ -58,7 +58,7 @@ window.HTTP = (function () {
           env.r.setRequestHeader(h, v);
         }), io;
       },
-      then: function (fn) {
+      and: function (fn) {
         return chain(env, function () {
           env.c.push(fn);
         }), io;
@@ -79,5 +79,8 @@ window.HTTP = (function () {
     return env.r.open(method, url, true), chain(env), io;
   }
 
-  return ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'].forEach(assign), HTTP;
-}());
+  ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'].forEach(assign);
+
+  HTTP.delay = 10;
+  G.HTTP = HTTP;
+}(this));
